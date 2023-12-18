@@ -10,17 +10,13 @@ from typing import List, Optional
 from pymongo import MongoClient
 import bcrypt
 
-# Connect to MongoDB Atlas
-client = MongoClient(os.getenv("MONGO_URI"))
+client = MongoClient("mongodb+srv://rishi:rishi@cluster0.3x2w3.mongodb.net/lader?retryWrites=true&w=majority")
 
-# Access/initialize database and collection
 db = client["lader"]
-collection = db["users"]
+user_collection = db["users"]
+file_collection = db["files"]
 
 app = FastAPI()
-
-def get_collection() -> Collection:
-    return collection
 
 origins = ['http://localhost:3000']
 
@@ -50,13 +46,22 @@ async def predict(file: UploadFile = File(...)):
         file_object.write(await file.read())
 
     filename = file.filename
-    # convertapi.api_secret = os.getenv("CONVERTAPI_SECRET")
     convertapi.api_secret = "tbHYVkZXmJccLx0t"
-    # Using ConvertAPI to convert the PDF to JPG
     result = convertapi.convert('jpg', {'File': file_path})
     
     # Saving the converted files to a specific directory
+
     result.save_files(os.getcwd()+'/output/')
+
+    with open(file_path, "rb") as pdf_file:
+        pdf_bin_data = pdf_file.read()
+
+    # Store the binary data in MongoDB
+    doc = {"filename": filename, "file_data": pdf_bin_data}
+    file_collection.insert_one(doc)
+
+    
+
 
     return {"detail": "File uploaded and converted successfully"}
 

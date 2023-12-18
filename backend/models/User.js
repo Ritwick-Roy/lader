@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    files: [{ name: { type: String }, pic: { type: String } }],
+    files: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"File"
+    }
+    ],
     date: {
       type: Date,
       default: Date.now,
