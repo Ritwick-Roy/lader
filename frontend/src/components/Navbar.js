@@ -19,7 +19,7 @@ const Navbar = () => {
       <div className="links">
         <Link
           className="predict-link"
-          to="/predict"
+          to="/lader"
           style={{
             color: isHovering ? "#333":"white",
             backgroundColor: isHovering ? "":"#09a188",
@@ -28,9 +28,10 @@ const Navbar = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          Predict
+          LADER
         </Link>
-        <Link to="/doc_an">Document analysis</Link>
+        <Link to="/qagen">QA Generation</Link>
+        <Link to="/files">Your files</Link>
       </div>
     </nav>
   );

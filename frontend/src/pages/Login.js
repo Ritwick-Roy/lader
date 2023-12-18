@@ -5,14 +5,12 @@ import { getBaseUrl } from "../utils/index";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [token,setToken]=useState("");
   useEffect(()=>{
     const loggedin=localStorage.getItem("token");
     if(loggedin)
     {
       navigate('/');
     }
-    setToken(loggedin);
   },[navigate]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

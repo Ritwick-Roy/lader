@@ -2,7 +2,7 @@ const getModelUrl = () => {
   let url;
   switch (process.env.NODE_ENV) {
     case "production":
-      url = "https://sputnik-healthcare.herokuapp.com";
+      url = "";
       break;
     case "development":
       url = "http://localhost:8000";
@@ -17,7 +17,7 @@ const getBaseUrl = () => {
   let url;
   switch (process.env.NODE_ENV) {
     case "production":
-      url = "https://sputnik-backend.herokuapp.com";
+      url = "";
       break;
     case "development":
       url = "http://localhost:5000";

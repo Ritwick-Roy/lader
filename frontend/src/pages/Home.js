@@ -1,9 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import pic from "../images/doctor-one.png";
-import { getBaseUrl } from "../utils";
-import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+// import pic from "../images/doctor-one.png";
+// import { getBaseUrl } from "../utils";
+// import Button from '@mui/material/Button';
 const Home = () => {
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState();
@@ -36,9 +36,6 @@ const Home = () => {
           {!token && <button variant="text" onClick={loginHandler}>Login</button>}
           {!token && <button variant="text" onClick={signupHandler}>Signup</button>}
           {token && <button variant="text" onClick={signoutHandler}>Signout</button>}
-        </div>
-        <div className="column homeimage">
-          <img src={pic} alt="" />
         </div>
       </div>
     </div>
