@@ -1,30 +1,22 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from "../../utils/index";
+import { getBaseUrl } from "../utils/index";
 
-const PatientLogin = () => {
-  const navigate = useNavigate();
-  const [token,setToken]=useState("");
-  useEffect(()=>{
-    const loggedin=localStorage.getItem("token");
-    if(loggedin)
-    {
-      navigate('/');
-    }
-    setToken(loggedin);
-  },[]);
+const Signup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate=useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`${getBaseUrl()}/api/patient/login`, { email, password })
+      .post(`${getBaseUrl()}/api/user/register`,{name,email,password})
       .then((res) => {
         console.log(res.data);
         const { token } = res.data;
         localStorage.setItem("token", token);
-        navigate("/",{ replace: true });
+        navigate('/',{ replace: true });
       })
       .catch((err) => {
         if (err) console.log(err);
@@ -33,8 +25,18 @@ const PatientLogin = () => {
 
   return (
     <div className="login-signup">
-      <h1>Patient Login</h1>
+      <h1>Signup</h1>
       <form id="form" onSubmit={handleSubmit}>
+        Name: 
+        <input
+          id="input"
+          type="text"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+        <br />
         Email:
         <input
           id="input"
@@ -45,7 +47,7 @@ const PatientLogin = () => {
           }}
         />
         <br />
-        Password:
+        Password: 
         <input
           id="input"
           type="password"
@@ -56,14 +58,14 @@ const PatientLogin = () => {
         />
         <br />
         <button type="submit" value="Submit">
-          Login
+          Register
         </button>
-        <button onClick={() => {navigate("/patient/signup")}}>
-          Signup
+        <button onClick={() => {navigate("/login")}}>
+          Login
         </button>
       </form>
     </div>
   );
 };
 
-export default PatientLogin;
+export default Signup;

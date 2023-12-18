@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/">
-        <h1>Sputnik</h1>
+        <h1>LADER</h1>
       </Link>
       <div className="links">
         <Link
@@ -23,16 +23,14 @@ const Navbar = () => {
           style={{
             color: isHovering ? "#333":"white",
             backgroundColor: isHovering ? "":"#09a188",
-            borderRadius: "8px",
+            borderRadius:"8px"
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           Predict
         </Link>
-        <Link to="/appointments">Appointments</Link>
-        <Link to="/patient/upload">Prescriptions</Link>
-        <Link to="/doctors">For doctors</Link>
+        <Link to="/doc_an">Document analysis</Link>
       </div>
     </nav>
   );

@@ -6,10 +6,7 @@ require("dotenv").config();
 const morgan = require("morgan");
 
 const PORT = process.env.PORT || 5000;
-const appointmentApiRoutes = require("./routes/appointmentApi");
-const doctorApiRoutes = require("./routes/doctorApi");
-const patientApiRoutes = require("./routes/patientApi");
-const profileApiRoutes = require("./routes/profileApi");
+const userRoutes = require("./routes/userApi");
 
 app.use(morgan("dev"));
 
@@ -17,10 +14,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json({ extended: false }));
-app.use("/api/appointment", appointmentApiRoutes);
-app.use("/api/doctor",doctorApiRoutes);
-app.use("/api/patient",patientApiRoutes)
-// app.use("/api/profile", profileApiRoutes);
+app.use("/api/user",userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Default route up!");
@@ -34,7 +28,6 @@ const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
     origin: "*",
-    // credentials: true,
   },
 });
 

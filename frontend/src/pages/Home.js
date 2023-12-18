@@ -12,15 +12,14 @@ const Home = () => {
   useEffect(() => {
     const loggedin = localStorage.getItem("token");
     setToken(loggedin);
-    console.log(loggedin);
   }, [refresh]);
 
   const loginHandler = () => {
-    navigate("/patient/login");
+    navigate("/login");
   };
 
   const signupHandler = () => {
-    navigate("/patient/signup");
+    navigate("/signup");
   };
 
   const signoutHandler = () => {
@@ -32,21 +31,16 @@ const Home = () => {
     <div className="home">
       <h1>Home</h1>
 
-      <div class="row">
-        <div class="column">
+      <div className="row">
+        <div className="column">
           {!token && <button variant="text" onClick={loginHandler}>Login</button>}
           {!token && <button variant="text" onClick={signupHandler}>Signup</button>}
           {token && <button variant="text" onClick={signoutHandler}>Signout</button>}
         </div>
-        <div class="column homeimage">
+        <div className="column homeimage">
           <img src={pic} alt="" />
         </div>
       </div>
-
-      <br />
-      <br />
-      <br />
-      <br />
     </div>
   );
 };

@@ -2,17 +2,15 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
-const Patient = require("../models/Patient");
-const Doctor = require("../models/Doctor");
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const authDoctor = require("../middleware/authDoctor");
-const authPatient = require("../middleware/authPatient");
+const authUser = require("../middleware/authUser");
 require("dotenv").config();
 
-router.get("/", authPatient, async (req, res) => {
+router.get("/", authUser, async (req, res) => {
   try {
-    const patient = await Patient.findById(req.patient.id).select("-password");
-    res.json(patient);
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
   } catch (error) {
     console.error(error.message);
   }
@@ -21,8 +19,8 @@ router.get("/", authPatient, async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const id=req.params.id;
-    const doctor = await Patient.findById(id).select("-password");
-    res.json(doctor);
+    const user = await User.findById(id).select("-password");
+    res.json(user);
   } catch (error) {
     console.error(error.message);
   }
@@ -41,15 +39,15 @@ router.post(
     }
     try {
       const { email, password } = req.body;
-      let patient = await Patient.findOne({ email: email });
-      if (!patient) {
+      let user = await User.findOne({ email: email });
+      if (!user) {
         console.log("Account not found");
         return res
           .status(400)
           .json({ error: [{ msg: "Invalid email or password" }] });
       }
 
-      const match = await bcrypt.compare(password, patient.password);
+      const match = await bcrypt.compare(password, user.password);
       if (!match) {
         console.log("Invalid password");
         return res
@@ -58,8 +56,8 @@ router.post(
       }
 
       const payload = {
-        patient: {
-          id: patient._id,
+        user: {
+          id: user._id,
         },
       };
       jwt.sign(
@@ -92,23 +90,23 @@ router.post(
     }
     try {
       const { name, email, password } = req.body;
-      let patient = await Patient.findOne({ email: email });
-      if (patient) {
+      let user = await User.findOne({ email: email });
+      if (user) {
         return res
           .status(400)
-          .json({ error: [{ msg: "patient already exists" }] });
+          .json({ error: [{ msg: "User already exists" }] });
       }
-      patient = new Patient({
+      user = new User({
         name,
         email,
         password,
       });
-      const salt = await bcrypt.genSalt(10); //check what salt is
-      patient.password = await bcrypt.hash(password, salt);
-      await patient.save();
+      const salt = await bcrypt.genSalt(10); 
+      user.password = await bcrypt.hash(password, salt);
+      await user.save();
       const payload = {
-        patient: {
-          id: patient.id,
+        User: {
+          id: User.id,
         },
       };
       jwt.sign(
@@ -127,14 +125,15 @@ router.post(
   }
 );
 
-router.put('/',authPatient,async(req,res)=>{
+
+router.put('/', async(req,res)=>{
   try {
     const {name,pic} =req.body;
-    const id=req.patient.id;
-    let patient=await Patient.findById(id);
-    let files=patient.files;
+    const id=req.User.id;
+    let User=await User.findById(id);
+    let files=User.files;
     files=[...files,{name,pic}]
-    patient=await Patient.findByIdAndUpdate(id,{files});
+    User=await User.findByIdAndUpdate(id,{files});
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

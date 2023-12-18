@@ -1,27 +1,26 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from "../../utils";
+import { getBaseUrl } from "../utils/index";
 
-const DoctorLogin = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [token,setToken]=useState("");
   useEffect(()=>{
     const loggedin=localStorage.getItem("token");
     if(loggedin)
     {
-      navigate('/doctors');
+      navigate('/');
     }
     setToken(loggedin);
-  },[]);
+  },[navigate]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`${getBaseUrl()}/api/doctor/login`, { email, password })
+      .post(`${getBaseUrl()}/api/user/login`, { email, password })
       .then((res) => {
-        console.log(res.data);
         const { token } = res.data;
         localStorage.setItem("token", token);
         navigate("/",{ replace: true });
@@ -32,10 +31,10 @@ const DoctorLogin = () => {
   };
 
   return (
-    <div>
-      <h1>Doctor Login</h1>
+    <div className="login-signup">
+      <h1>Login</h1>
       <form id="form" onSubmit={handleSubmit}>
-        Email
+        Email:
         <input
           id="input"
           type="text"
@@ -44,21 +43,26 @@ const DoctorLogin = () => {
             setEmail(e.target.value);
           }}
         />
-        Password
+        <br />
+        Password:
         <input
           id="input"
-          type="text"
+          type="password"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
           }}
         />
+        <br />
         <button type="submit" value="Submit">
-          Send
+          Login
+        </button>
+        <button onClick={() => {navigate("/signup")}}>
+          Signup
         </button>
       </form>
     </div>
   );
 };
 
-export default DoctorLogin;
+export default Login;

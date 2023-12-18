@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
     jwt.verify(token, process.env.JWT_SECRET,(err,decoded)=>{
       // if(err) 
         // res.status(401).json({ msg: "Token expired" });
-      req.patient = decoded.patient;
+      req.user = decoded.user;
       next();
     });
   } catch (error) {
